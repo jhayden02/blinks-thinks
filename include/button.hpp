@@ -27,8 +27,10 @@
 
 // Standard library.
 #include <vector>
+#include <optional>
 
 using std::vector;
+using std::optional;
 
 namespace engine
 {
@@ -95,7 +97,7 @@ namespace engine
             float m_scale;              // What 'm_rectangle' and the text object's 'm_fontSize'
                                         // are multiplied by.
 
-            Sound m_sfx_press;          // The sound effect played when the button is pressed.
+            optional<Sound> m_sfx_press;    // The sound effect played when the button is pressed.
 
             vector<button_trait*> m_traits; // the storage container to hold all active traits
                                             // attached to the button.

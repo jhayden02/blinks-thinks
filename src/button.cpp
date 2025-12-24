@@ -56,7 +56,6 @@ button::button(
     m_scale(1.0f)
 {
     this->m_text_obj->set_position(m_position);
-    //this->m_sfx_press = game::get_instance().get_sound_effect("click");
 }
 
 button::~button() {
@@ -136,8 +135,8 @@ void button::update()
         m_current_text_color = m_default_text_color;
     }
 
-    if (is_pressed()/* && IsSoundReady(m_sfx_press)*/) {
-        PlaySound(m_sfx_press);
+    if (is_pressed() && m_sfx_press.has_value()) {
+        PlaySound(*m_sfx_press);
     }
 
     m_text_obj->set_text_color(m_current_text_color); 
