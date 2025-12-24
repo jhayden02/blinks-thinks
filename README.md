@@ -20,7 +20,7 @@ web-compiled game in a separate branch, 'gh-pages'. GitHub Workflows re-compiles
 this branch on each push.
 
 ## Play Online
-To play the most recent commit of the game hosted on GitHub Pages, go [here](https://blinkdynamo.github.io/blinks-thinks/).
+To play the most recent commit of the game hosted on GitHub Pages, go [here](https://jhayden02.github.io/blinks-thinks/).
 
 ## Mission Statement
 I got inspired to start this project when I saw some [tsoding](https://github.com/tsoding)
