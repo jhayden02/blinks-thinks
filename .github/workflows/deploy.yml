@@ -18,8 +18,11 @@ jobs:
         with:
           version: 3.1.60
 
-      - name: Build Web
-        run: make web
+      - name: Build Web Release
+        run: make build/web/release/index.html
+
+      - name: Clean object files
+        run: rm -f build/web/release/*.o
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

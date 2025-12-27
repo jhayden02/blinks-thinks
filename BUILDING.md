@@ -21,6 +21,36 @@ git submodule update --init --recursive
 **w64devkit**
 - Download `w64devkit-x.xx.x.zip` from https://github.com/skeeto/w64devkit
 - Extract to `c:\w64devkit`
+- Always run `w64devkit.exe` as administrator when developing
+
+**Python** (required for Emscripten web builds)
+- Download Python from https://www.python.org/downloads/
+- During installation, check "Add Python to PATH"
+
+**Emscripten SDK** (optional, for web builds)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/emscripten-core/emsdk.git
+   cd emsdk
+   ```
+2. From w64devkit running as administrator:
+   ```bash
+   ./emsdk.bat install latest
+   ./emsdk.bat activate latest --system
+   ./emsdk_env.bat
+   ```
+
+**Enable Git Symlinks** (required for raylib headers)
+1. Enable Developer Mode in Windows:
+   - Settings → Update & Security → For developers → Developer Mode
+2. Configure Git to use symlinks:
+   ```bash
+   git config core.symlinks true
+   ```
+3. Re-checkout the symlinked header files:
+   ```bash
+   git checkout HEAD -- include/raylib.h include/raymath.h include/rlgl.h
+   ```
 
 #### Building
 
@@ -79,7 +109,7 @@ On first build, raylib will be compiled from the submodule with Wayland and X11 
 
 ### Web
 
-Web builds work from any platform using Emscripten.
+Web builds work on Linux using Emscripten.
 
 #### Prerequisites
 
@@ -96,7 +126,14 @@ Web builds work from any platform using Emscripten.
 
 #### Building
 
-1. Activate Emscripten environment:
+1. Activate Emscripten environment (in each new terminal):
+
+   On Windows:
+   ```bash
+   /path/to/emsdk/emsdk_env.bat
+   ```
+
+   On Linux/Mac:
    ```bash
    source /path/to/emsdk/emsdk_env.sh
    ```
@@ -178,49 +215,3 @@ include/
 
 Raylib version: Determined by external/raylib submodule (currently 5.5)
 ```
-
-## Troubleshooting
-
-### Windows
-
-**Problem**: `raylib.h: No such file or directory`
-- Ensure git submodule is initialized: `git submodule update --init --recursive`
-- Headers come from `external/raylib/src/`
-
-**Problem**: `cannot find -lraylib`
-- Run `make native` to download raylib library
-- Ensure `lib/windows/libraylib.a` exists after download
-- Check internet connection if download fails
-
-**Problem**: `make: command not found`
-- Run commands from the w64devkit console, not cmd.exe or PowerShell
-
-### Linux
-
-**Problem**: `raylib.h: No such file or directory`
-- Ensure git submodule is initialized: `git submodule update --init --recursive`
-- Headers come from `external/raylib/src/`
-
-**Problem**: `cannot find -lraylib`
-- Run `make native` to build raylib library
-- Install build dependencies (see Prerequisites)
-- Ensure `lib/linux/libraylib.a` exists after building
-
-**Problem**: Build errors about missing GLFW or OpenGL
-- Install required development libraries (see Prerequisites)
-
-### Web
-
-**Problem**: `emcc: command not found`
-- Activate the Emscripten SDK environment:
-  ```bash
-  source /path/to/emsdk/emsdk_env.sh
-  ```
-
-**Problem**: Assets not loading
-- Ensure the `res/` directory exists and contains your assets
-- The Makefile automatically preloads all files in `res/`
-
-**Problem**: Web build runs but displays incorrectly
-- Check browser console for WebGL errors
-- Ensure your browser supports WebAssembly and WebGL 2.0

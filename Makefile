@@ -26,18 +26,20 @@ PLATFORM ?= $(NATIVE_PLATFORM)
 # ------------------------
 STD       := -std=c++23
 WARNINGS  := -Wall -Wextra -Werror -Wshadow -Wnon-virtual-dtor -Wold-style-cast
-INCLUDES  := -I. -Iinclude
 
-# Platform-specific compilers.
+# Platform-specific compilers and includes.
 ifeq ($(PLATFORM),windows)
     CXX := g++
     CC  := gcc
+    INCLUDES := -I. -Iexternal/raylib/src -Iinclude
 else ifeq ($(PLATFORM),linux)
     CXX := clang++
     CC  := clang
+    INCLUDES := -I. -Iinclude
 else ifeq ($(PLATFORM),web)
     CXX := em++
     CC  := emcc
+    INCLUDES := -I. -Iinclude
 endif
 
 # ------------------------
@@ -72,7 +74,7 @@ CXXFLAGS_WEB_RELEASE := $(STD) $(WARNINGS) $(INCLUDES) -DPLATFORM_WEB -DNDEBUG -
 # Link Flags
 # ------------------------
 ifeq ($(PLATFORM),windows)
-    LINK_FLAGS := -Llib/windows -lraylib -lgdi32 -lwinmm
+    LINK_FLAGS := -Llib/windows -lraylibdll -lopengl32 -lgdi32 -lwinmm
     EXECUTABLE_EXT := .exe
 else ifeq ($(PLATFORM),linux)
     LINK_FLAGS := -Llib/linux -lraylib -lm -ldl -lpthread -lGL
@@ -92,15 +94,15 @@ ifeq ($(PLATFORM),windows)
 else ifeq ($(PLATFORM),linux)
     RL_LIB := lib/linux/libraylib.a
 else ifeq ($(PLATFORM),web)
-    RL_LIB := lib/web/libraylib_web.a
+    RL_LIB := lib/web/libraylib.a
 endif
 
 # Web library (always defined).
-RL_LIB_WEB := lib/web/libraylib_web.a
+RL_LIB_WEB := lib/web/libraylib.a
 
 # Web link configuration (always defined).
 WEB_PRELOAD_ASSETS := $(shell find res -type f 2>/dev/null | xargs -I{} echo --preload-file {})
-WEB_LINK_FLAGS := lib/web/libraylib_web.a \
+WEB_LINK_FLAGS := lib/web/libraylib.a \
                   -s USE_GLFW=3 -s ASYNCIFY -s ALLOW_MEMORY_GROWTH=1 \
                   -s FORCE_FILESYSTEM=1 $(WEB_PRELOAD_ASSETS) \
                   --shell-file web/shell.html
@@ -162,14 +164,14 @@ lib: $(RL_LIB)
 
 ifeq ($(PLATFORM),windows)
 # Windows: Download pre-built library from GitHub release based on submodule version.
+RAYLIB_WIN_ARCHIVE := raylib-$(RAYLIB_VERSION)_win64_mingw-w64
 $(RL_LIB): | lib/windows
 	@echo "Downloading raylib $(RAYLIB_VERSION) for Windows (mingw-w64)..."
-	@mkdir -p /tmp/raylib-win >/dev/null 2>&1
-	@curl -L -o /tmp/raylib-win.zip https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/raylib-$(RAYLIB_VERSION)_win64_mingw-w64.zip >/dev/null 2>&1
+	@mkdir -p temp >/dev/null 2>&1
+	@curl -L -o temp/$(RAYLIB_WIN_ARCHIVE).zip https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/$(RAYLIB_WIN_ARCHIVE).zip >/dev/null 2>&1
 	@echo "Extracting libraries to lib/windows/..."
-	@unzip -q /tmp/raylib-win.zip "lib/*" -d /tmp/raylib-win >/dev/null 2>&1
-	@cp -r /tmp/raylib-win/lib/* lib/windows/ >/dev/null 2>&1
-	@rm -rf /tmp/raylib-win /tmp/raylib-win.zip
+	@unzip -qj temp/$(RAYLIB_WIN_ARCHIVE).zip "$(RAYLIB_WIN_ARCHIVE)/lib/*" -d lib/windows >/dev/null 2>&1
+	@rm -rf temp
 	@echo "Windows raylib $(RAYLIB_VERSION) setup complete!"
 
 else ifeq ($(PLATFORM),linux)
