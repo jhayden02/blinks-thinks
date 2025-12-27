@@ -26,7 +26,7 @@ PLATFORM ?= $(NATIVE_PLATFORM)
 # ------------------------
 STD       := -std=c++23
 WARNINGS  := -Wall -Wextra -Werror -Wshadow -Wnon-virtual-dtor -Wold-style-cast
-INCLUDES  := -I. -Iinclude
+INCLUDES  := -I. -Iexternal/raylib/src -Iinclude
 
 # Platform-specific compilers.
 ifeq ($(PLATFORM),windows)
@@ -72,7 +72,7 @@ CXXFLAGS_WEB_RELEASE := $(STD) $(WARNINGS) $(INCLUDES) -DPLATFORM_WEB -DNDEBUG -
 # Link Flags
 # ------------------------
 ifeq ($(PLATFORM),windows)
-    LINK_FLAGS := -Llib/windows -lraylib -lgdi32 -lwinmm
+    LINK_FLAGS := -Llib/windows -lraylib -lopengl32 -lgdi32 -lwinmm
     EXECUTABLE_EXT := .exe
 else ifeq ($(PLATFORM),linux)
     LINK_FLAGS := -Llib/linux -lraylib -lm -ldl -lpthread -lGL
@@ -162,14 +162,14 @@ lib: $(RL_LIB)
 
 ifeq ($(PLATFORM),windows)
 # Windows: Download pre-built library from GitHub release based on submodule version.
+RAYLIB_WIN_ARCHIVE := raylib-$(RAYLIB_VERSION)_win64_mingw-w64
 $(RL_LIB): | lib/windows
 	@echo "Downloading raylib $(RAYLIB_VERSION) for Windows (mingw-w64)..."
-	@mkdir -p /tmp/raylib-win >/dev/null 2>&1
-	@curl -L -o /tmp/raylib-win.zip https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/raylib-$(RAYLIB_VERSION)_win64_mingw-w64.zip >/dev/null 2>&1
+	@mkdir -p temp >/dev/null 2>&1
+	@curl -L -o temp/$(RAYLIB_WIN_ARCHIVE).zip https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/$(RAYLIB_WIN_ARCHIVE).zip >/dev/null 2>&1
 	@echo "Extracting libraries to lib/windows/..."
-	@unzip -q /tmp/raylib-win.zip "lib/*" -d /tmp/raylib-win >/dev/null 2>&1
-	@cp -r /tmp/raylib-win/lib/* lib/windows/ >/dev/null 2>&1
-	@rm -rf /tmp/raylib-win /tmp/raylib-win.zip
+	@unzip -qj temp/$(RAYLIB_WIN_ARCHIVE).zip "$(RAYLIB_WIN_ARCHIVE)/lib/*" -d lib/windows >/dev/null 2>&1
+	@rm -rf temp
 	@echo "Windows raylib $(RAYLIB_VERSION) setup complete!"
 
 else ifeq ($(PLATFORM),linux)
