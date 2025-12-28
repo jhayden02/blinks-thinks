@@ -1,4 +1,4 @@
-.PHONY: all native web clean serve info
+.PHONY: all native web clean serve
 
 # ------------------------
 # Platform Detection
@@ -31,7 +31,7 @@ WARNINGS  := -Wall -Wextra -Werror -Wshadow -Wnon-virtual-dtor -Wold-style-cast
 ifeq ($(PLATFORM),windows)
     CXX := g++
     CC  := gcc
-    INCLUDES := -I. -Iexternal/raylib/src -Iinclude
+    INCLUDES := -I. -Iinclude
 else ifeq ($(PLATFORM),linux)
     CXX := clang++
     CC  := clang
@@ -78,8 +78,6 @@ ifeq ($(PLATFORM),windows)
     EXECUTABLE_EXT := .exe
 else ifeq ($(PLATFORM),linux)
     LINK_FLAGS := -Llib/linux -lraylib -lm -ldl -lpthread -lGL
-    # Add Wayland libraries for native Wayland support
-    # LINK_FLAGS += -lwayland-client -lwayland-cursor -lwayland-egl -lxkbcommon
     EXECUTABLE_EXT :=
 endif
 
@@ -168,11 +166,9 @@ RAYLIB_WIN_ARCHIVE := raylib-$(RAYLIB_VERSION)_win64_mingw-w64
 $(RL_LIB): | lib/windows
 	@echo "Downloading raylib $(RAYLIB_VERSION) for Windows (mingw-w64)..."
 	@mkdir -p temp >/dev/null 2>&1
-	@curl -L -o temp/$(RAYLIB_WIN_ARCHIVE).zip https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/$(RAYLIB_WIN_ARCHIVE).zip >/dev/null 2>&1
-	@echo "Extracting libraries to lib/windows/..."
-	@unzip -qj temp/$(RAYLIB_WIN_ARCHIVE).zip "$(RAYLIB_WIN_ARCHIVE)/lib/*" -d lib/windows >/dev/null 2>&1
+	@curl -L -o temp/$(RAYLIB_WIN_ARCHIVE).zip https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/$(RAYLIB_WIN_ARCHIVE).zip
+	@unzip -qj temp/$(RAYLIB_WIN_ARCHIVE).zip "$(RAYLIB_WIN_ARCHIVE)/lib/*" -d lib/windows
 	@rm -rf temp
-	@echo "Windows raylib $(RAYLIB_VERSION) setup complete!"
 
 else ifeq ($(PLATFORM),linux)
 # Linux: Build from source using raylib's Makefile with Wayland support.
@@ -181,7 +177,6 @@ $(RL_LIB): | lib/linux
 	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
 	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_DESKTOP GLFW_LINUX_ENABLE_WAYLAND=TRUE GLFW_LINUX_ENABLE_X11=TRUE RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
 	@cp $(RL_SRC)/libraylib.a $@
-	@echo "Linux raylib $(RAYLIB_VERSION) built successfully!"
 
 else ifeq ($(PLATFORM),web)
 # Web: Build from source using raylib's Makefile.
@@ -190,7 +185,6 @@ $(RL_LIB): | lib/web
 	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
 	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_WEB CC=emcc AR=emar RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
 	@cp $(RL_SRC)/libraylib.a $@
-	@echo "Web raylib $(RAYLIB_VERSION) built successfully!"
 
 endif
 
@@ -200,7 +194,6 @@ $(RL_LIB_WEB): | lib/web
 	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
 	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_WEB CC=emcc AR=emar RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
 	@cp $(RL_SRC)/libraylib.a $@
-	@echo "Web raylib $(RAYLIB_VERSION) built successfully!"
 
 # ------------------------
 # Directory Creation
@@ -234,11 +227,3 @@ clean:
 
 serve: $(D_OBJ_WEB_RELEASE)/index.html
 	cd build/web/release && python -m http.server 8080
-
-info:
-	@echo "Native Platform: $(NATIVE_PLATFORM)"
-	@echo "Build Directories:"
-	@echo "  Native Debug:   $(D_OBJ_DEBUG)"
-	@echo "  Native Release: $(D_OBJ_RELEASE)"
-	@echo "  Web Debug:      $(D_OBJ_WEB_DEBUG)"
-	@echo "  Web Release:    $(D_OBJ_WEB_RELEASE)"
