@@ -12,7 +12,6 @@ uniform vec2 resolution;
 void main() {
     vec4 color = texture2D(texture0, fragTexCoord);
 
-    // Vignette effect.
     vec2 uv = fragTexCoord * 2.0 - 1.0;
     float dist = length(uv);
     float vignette = smoothstep(1.8, 0.8, dist);
