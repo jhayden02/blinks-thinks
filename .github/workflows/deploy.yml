@@ -18,13 +18,16 @@ jobs:
         with:
           version: 3.1.60
 
-      - name: Build Web
-        run: make -j$(nproc) web
-        
+      - name: Build Web Release
+        run: make build/web/release/index.html
+
+      - name: Clean object files
+        run: rm -f build/web/release/*.o
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./build/web/out
+          publish_dir: ./build/web/release
           force_orphan: true
