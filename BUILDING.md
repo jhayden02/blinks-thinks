@@ -54,7 +54,7 @@ This creates:
 - `build/windows/debug/blinks_thinks.exe`
 - `build/windows/release/blinks_thinks.exe`
 
-If this is the first build, raylib will be downloaded automatically and added to `lib/windows/`.
+If this is the first build, raylib will be compiled from source and added to `lib/windows/`.
 
 Web build:
 ```bash
@@ -124,7 +124,7 @@ This creates:
 - `build/linux/debug/blinks_thinks`
 - `build/linux/release/blinks_thinks`
 
-If this is the first build, raylib will be downloaded automatically and added to `lib/linux/`.
+If this is the first build, raylib will be compiled from source and added to `lib/linux/`.
 
 Web build:
 ```bash

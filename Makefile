@@ -121,9 +121,7 @@ native: $(RL_LIB) $(D_OBJ_DEBUG)/blinks_thinks$(EXECUTABLE_EXT) $(D_OBJ_RELEASE)
 
 web: $(RL_LIB_WEB) $(D_OBJ_WEB_DEBUG)/index.html $(D_OBJ_WEB_RELEASE)/index.html
 
-# ------------------------
-# Native Build Rules (Windows/Linux)
-# ------------------------
+# ------------------------ # Native Build Rules (Windows/Linux) # ------------------------
 ifneq ($(PLATFORM),web)
 
 $(D_OBJ_DEBUG)/%.o: $(D_SRC)/%.cpp | $(D_OBJ_DEBUG)
@@ -161,14 +159,12 @@ $(D_OBJ_WEB_RELEASE)/index.html: $(patsubst $(D_SRC)/%.cpp,$(D_OBJ_WEB_RELEASE)/
 lib: $(RL_LIB)
 
 ifeq ($(PLATFORM),windows)
-# Windows: Download pre-built library from GitHub release based on submodule version.
-RAYLIB_WIN_ARCHIVE := raylib-$(RAYLIB_VERSION)_win64_mingw-w64
+# Windows: Build from source using raylib's Makefile.
 $(RL_LIB): | lib/windows
-	@echo "Downloading raylib $(RAYLIB_VERSION) for Windows (mingw-w64)..."
-	@mkdir -p temp >/dev/null 2>&1
-	@curl -L -o temp/$(RAYLIB_WIN_ARCHIVE).zip https://github.com/raysan5/raylib/releases/download/$(RAYLIB_VERSION)/$(RAYLIB_WIN_ARCHIVE).zip
-	@unzip -qj temp/$(RAYLIB_WIN_ARCHIVE).zip "$(RAYLIB_WIN_ARCHIVE)/lib/*" -d lib/windows
-	@rm -rf temp
+	@echo "Building raylib $(RAYLIB_VERSION) for Windows..."
+	@rm -f $(RL_SRC)/*.o $(RL_SRC)/libraylib.a
+	@$(MAKE) -C $(RL_SRC) PLATFORM=PLATFORM_DESKTOP CC=gcc RAYLIB_LIBTYPE=STATIC >/dev/null 2>&1
+	@cp $(RL_SRC)/libraylib.a $@
 
 else ifeq ($(PLATFORM),linux)
 # Linux: Build from source using raylib's Makefile with Wayland support.
