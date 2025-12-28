@@ -68,16 +68,6 @@ void level::draw()
     }
 }
 
-void level::draw_layers(int min_layer, int max_layer)
-{
-    for (const auto& ent : m_entities) {
-        int layer = ent->get_layer();
-        if (layer < min_layer) continue;
-        if (layer > max_layer) break;
-        ent->draw();
-    }
-}
-
 // Create a simple text with a background shadow.
 text* level::add_simple_text(string text_str, float font_size, Color text_color, Vector2 position,
                                  int layer)

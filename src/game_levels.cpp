@@ -44,7 +44,8 @@ intro_raylib::intro_raylib()
     m_game.audio.set_next_music("title_theme"); 
 }
 
-void intro_raylib::update() {
+void intro_raylib::update()
+{
     level::update(); 
 
     if (m_animation->is_finished()) {

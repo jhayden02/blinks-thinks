@@ -56,16 +56,10 @@ game::game()
 
     // Set the tracelog level.
     SetTraceLogLevel(LOG_DEBUG);
-
-    // Load background blur effect.
-    m_background_target = LoadRenderTexture(m_w, m_h);
-    m_blur_shader = LoadShader(0, "res/shaders/blur.frag");
 }
 
 game::~game()
 {
-    UnloadRenderTexture(m_background_target);
-    UnloadShader(m_blur_shader);
     CloseWindow();
 }
 
@@ -223,30 +217,10 @@ void game::run()
         // ---------------------------------------------------------------------------------- //
         //                                       draw.                                        //
         // ---------------------------------------------------------------------------------- //
-        if (m_current_level != nullptr) {
-            BeginTextureMode(m_background_target);
-                ClearBackground(RAYWHITE);
-                m_current_level->draw_layers(INT_MIN, -1);
-            EndTextureMode();
-
-            BeginDrawing();
-                ClearBackground(BLACK);
-                BeginShaderMode(m_blur_shader);
-                    DrawTextureRec(
-                        m_background_target.texture,
-                        {0.0f, 0.0f, static_cast<float>(m_w), -static_cast<float>(m_h)},
-                        {0.0f, 0.0f},
-                        WHITE
-                    );
-                EndShaderMode();
-                m_current_level->draw_layers(0, INT_MAX);
-            EndDrawing();
-        } else {
-            BeginDrawing();
-                ClearBackground(RAYWHITE);
-                if (m_current_level != nullptr) m_current_level->draw();
-            EndDrawing();
-        }
+        BeginDrawing();
+            ClearBackground(RAYWHITE);
+            if (m_current_level != nullptr) m_current_level->draw();
+        EndDrawing();
     }
 }
 

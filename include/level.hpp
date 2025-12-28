@@ -62,8 +62,6 @@ namespace engine
                                                 // is needed that can not already be handled in
                                                 // 'update()', but the option is there.
 
-            void draw_layers(int min_layer, int max_layer);
-          
             // Getters and setters.
             vector<button*> get_buttons() { return m_buttons; }
 

@@ -32,6 +32,7 @@ namespace engine
                 Color dark_color,
                 Color light_color,
                 int square_size);
+            ~background();
 
             void update() override;
             void draw() override;
@@ -47,5 +48,9 @@ namespace engine
             int m_square_size;
 
             static float m_scroll_offset;
+
+            // Shader processing.
+            RenderTexture2D m_render_target;
+            Shader m_blur_shader;
     };
 }
