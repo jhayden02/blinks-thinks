@@ -42,13 +42,21 @@ background::background(
     m_square_size(square_size)
 {
     m_render_target = LoadRenderTexture(game::get_w(), game::get_h());
+    m_blur_target = LoadRenderTexture(game::get_w(), game::get_h());
     m_blur_shader = LoadShader(0, "res/shaders/blur.frag");
+    m_vignette_shader = LoadShader(0, "res/shaders/vignette.frag");
+
+    int resolution_loc = GetShaderLocation(m_vignette_shader, "resolution");
+    float resolution[2] = {static_cast<float>(game::get_w()), static_cast<float>(game::get_h())};
+    SetShaderValue(m_vignette_shader, resolution_loc, resolution, SHADER_UNIFORM_VEC2);
 }
 
 background::~background()
 {
     UnloadRenderTexture(m_render_target);
+    UnloadRenderTexture(m_blur_target);
     UnloadShader(m_blur_shader);
+    UnloadShader(m_vignette_shader);
 }
 
 void background::update()
@@ -63,6 +71,7 @@ void background::draw()
 
     const float effective_offset = std::fmod(get_scroll_offset(), 2 * m_square_size);
 
+    // Render scene to m_render_target.
     BeginTextureMode(m_render_target);
     ClearBackground(RAYWHITE);
     for (int y = -2; y < rows; y++) {
@@ -78,9 +87,22 @@ void background::draw()
     }
     EndTextureMode();
 
+    // Apply blur shader to m_blur_target.
+    BeginTextureMode(m_blur_target);
     BeginShaderMode(m_blur_shader);
     DrawTextureRec(
         m_render_target.texture,
+        {0.0f, 0.0f, static_cast<float>(game::get_w()), -static_cast<float>(game::get_h())},
+        {0.0f, 0.0f},
+        WHITE
+    );
+    EndShaderMode();
+    EndTextureMode();
+
+    // Apply vignette shader to screen.
+    BeginShaderMode(m_vignette_shader);
+    DrawTextureRec(
+        m_blur_target.texture,
         {0.0f, 0.0f, static_cast<float>(game::get_w()), -static_cast<float>(game::get_h())},
         {0.0f, 0.0f},
         WHITE

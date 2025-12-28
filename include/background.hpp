@@ -51,6 +51,8 @@ namespace engine
 
             // Shader processing.
             RenderTexture2D m_render_target;
+            RenderTexture2D m_blur_target;
             Shader m_blur_shader;
+            Shader m_vignette_shader;
     };
 }
