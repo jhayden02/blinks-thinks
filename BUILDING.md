@@ -25,7 +25,7 @@ git checkout HEAD -- include/raylib.h include/raymath.h include/rlgl.h
 - During installation, check "Add Python to PATH"
 
 #### 6. Install w64devkit
-- Download `w64devkit-x.xx.x.zip` from https://github.com/skeeto/w64devkit
+- Download `w64devkit-x.xx.x.zip` from https://github.com/skeeto/w64devkit/releases
 - Extract to `c:\w64devkit`
 - Always run `w64devkit.exe` as administrator when developing
 
