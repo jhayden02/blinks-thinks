@@ -25,7 +25,7 @@ jobs:
           version: 3.1.60
 
       - name: Build web release
-        run: make build/web/release/index.html
+        run: make -j$(nproc) build/web/release/index.html
 
       - name: Clean object files
         run: rm -f build/web/release/*.o
