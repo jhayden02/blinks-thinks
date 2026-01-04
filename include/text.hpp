@@ -40,12 +40,14 @@ namespace engine
                 Vector2 position = {0, 0},
                 int layer = 0,
                 Color outline_color = BLACK,
-                float outline_size = 2.0f); 
+                float outline_size = 2.0f
+            ); 
 
             void update() override;
             void draw() override;
 
-            void add_anim_rotate(float rotation, float speed, float depth) {
+            void add_anim_rotate(float rotation, float speed, float depth)
+            {
                 m_rotation = rotation;
                 m_rotation_speed = speed;
                 m_rotation_depth = depth;
@@ -64,8 +66,7 @@ namespace engine
             float get_outline_size() { return m_outline_size; }
             void set_outline_size(float outline_size) { m_outline_size = outline_size; }
 
-            Vector2 get_text_dim() { return m_text_dim; }
-            void set_text_dim(Vector2 text_dim) { m_text_dim = text_dim; }
+            Rectangle get_rec() { return m_rec; }
 
             int get_font_size() { return m_base_font_size; }
             void set_font_size(int font_size) { m_base_font_size = font_size; }
@@ -73,34 +74,48 @@ namespace engine
             void set_scale(float scale) { m_scale = scale; }
 
         private:
-            string m_text_str;              // The text that will be displayed.
-                                            
-            float m_scale;                  // The scaling factor that should be applied to the
-                                            // original font size.
-                                            
-            float m_base_font_size;         // The size that the text is initially (unscaled).
-                                            
-            float m_scaled_font_size;       // The size that the text is after scaling is applied.
-                                            
-            Color m_text_color;             // The color that the text will be displayed.
+            // The font used for rendering this text.
+            Font m_font;
 
-            Color m_outline_color;          // The color of the outline drawn around the text.
-                                            
-            int m_letter_spacing;           // The pixels of spacing in between letters.
-                                            
-            Vector2 m_text_dim;             // The text's dimensions. Calculated after font size,
-                                            // letter spacing, and scaling have all been applied.
-                                            
-            Vector2 m_origin;               // The horizontal and vertical center of the text.
-                                            // Calculated after font size, letter spacing, and
-                                            // scaling have all been applied.
+            // The text that will be displayed.
+            string m_text_str;
 
-            float m_outline_size;           // The thickness of the outline in pixels.
+            // The scaling factor that should be applied to the original font size.
+            float m_scale;
+
+            // The size that the text is initially (unscaled).
+            float m_base_font_size;
+
+            // The size that the text is after scaling is applied.
+            float m_scaled_font_size;
+
+            // The color that the text will be displayed.
+            Color m_text_color;
+
+            // The color of the outline drawn around the text.
+            Color m_outline_color;
+
+            // The pixels of spacing in between letters.
+            int m_letter_spacing;
+
+            // The position and size of the drawn text, centered on m_position.
+            Rectangle m_rec;
+
+            // The horizontal and vertical center of the text. Calculated after font size, letter
+            // spacing, and scaling have all been applied.
+            Vector2 m_origin;
+
+            // The thickness of the outline in pixels.
+            float m_outline_size;
 
             // Rotation algorithm: m_rotation = sin(GetTime() * m_rotation_speed) * m_rotation_depth
+            // The rotation of the text (default is 0.0f).
+            float m_rotation;
 
-            float m_rotation;               // The rotation of the text (default is 0.0f).
-            float m_rotation_speed;         // The speed of rotation (default is 0.0f).
-            float m_rotation_depth;         // The depth of rotation (default is 0.0f).
+            // The speed of rotation (default is 0.0f).
+            float m_rotation_speed;
+
+            // The depth of rotation (default is 0.0f).
+            float m_rotation_depth;
     };
 }

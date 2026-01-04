@@ -953,7 +953,7 @@ void level_seven::update()
         for (button* btn : get_buttons()) {
             const bool two_buttons_collided = (
                 btn != button_in_hand &&
-                CheckCollisionRecs(button_in_hand->get_rectangle(), btn->get_rectangle())
+                CheckCollisionRecs(button_in_hand->get_scaled_rec(), btn->get_scaled_rec())
             );
 
             if (two_buttons_collided) {
@@ -1243,7 +1243,7 @@ void level_nine::update()
         numbers_in_box.reserve(m_choice_count);
 
         for (button* btn : get_buttons()) {
-            if (CheckCollisionRecs(btn->get_rectangle(), m_submit_box->get_rectangle())) {
+            if (CheckCollisionRecs(btn->get_scaled_rec(), m_submit_box->get_rectangle())) {
                 vector<button*>::iterator it = numbers_in_box.begin();
                 while (it != numbers_in_box.end() && (*it)->get_position().x <= btn->get_position().x) {
                     ++it;
@@ -1303,13 +1303,12 @@ level_ten::level_ten()
     )
     ->add_anim_rotate(0.0f, 4.0f, 1.5f);
 
-    Vector2 submit_box_position = {m_game.get_cw(), m_game.get_ch() - 25};
+    Vector2 const submit_box_position = {m_game.get_cw(), m_game.get_ch() - 25};
     this->m_submit_box = add_entity(
         new button(
             new text("", 80, BLACK, submit_box_position, 0, {0, 0, 0, 0}, 0.0f),
             WHITE,
-            {250, 150},
-            submit_box_position,
+            {submit_box_position.x - 125.0f, submit_box_position.y - 75.0f, 250.0f, 150.0f},
             0
         )
     );
@@ -1371,8 +1370,8 @@ level_ten::level_ten()
         if (values_it != button_values.end()) {
             Vector2 ice_cube_size;
             int ice_cube_padding = 32;
-            ice_cube_size.x = btn->get_rectangle().width + ice_cube_padding;
-            ice_cube_size.y = btn->get_rectangle().height + ice_cube_padding;
+            ice_cube_size.x = btn->get_scaled_rec().width + ice_cube_padding;
+            ice_cube_size.y = btn->get_scaled_rec().height + ice_cube_padding;
 
             Vector2 ice_cube_position = *positions_it;
             ice_cube_position.x += 4;   // Accomodate for the shadow offset of the text.
@@ -1422,7 +1421,7 @@ void level_ten::update()
 
         for (button* btn : get_buttons()) {
             if (btn == m_submit_button || btn == m_submit_box) { continue; }
-            if (CheckCollisionRecs(btn->get_rectangle(), m_submit_box->get_rectangle())) {
+            if (CheckCollisionRecs(btn->get_scaled_rec(), m_submit_box->get_scaled_rec())) {
                 vector<button*>::iterator it = numbers_in_box.begin();
                 while (it != numbers_in_box.end() && (*it)->get_position().x <= btn->get_position().x) {
                     ++it;

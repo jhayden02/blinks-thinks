@@ -21,10 +21,10 @@
 // Source.
 #include "text.hpp"
 
-using engine::text;
-
 // Standard library.
 #include <cmath>
+
+using engine::text;
 
 text::text(
     string text_str,
@@ -34,42 +34,62 @@ text::text(
     int layer,
     Color outline_color,
     float outline_size)
-
     :
     entity(position, layer),
-
+    m_font(GetFontDefault()),
     m_text_str(text_str),
     m_scale(1.0f),
-
     m_base_font_size(font_size),
     m_scaled_font_size(m_base_font_size * m_scale),
-
     m_text_color(text_color),
     m_outline_color(outline_color),
-
-    // Updated every frame in update().
     m_letter_spacing(m_base_font_size / 10.0f),
-    m_text_dim(MeasureTextEx(GetFontDefault(), m_text_str.c_str(), m_base_font_size, m_letter_spacing)),
-    m_origin({ m_text_dim.x / 2.0f, m_text_dim.y / 2.0f }),
-
+    m_rec{},
+    m_origin{},
     m_outline_size(outline_size),
-
-    // Set to 0, with the prospect of being set at a later time.
     m_rotation(0.0f),
     m_rotation_speed(0.0f),
     m_rotation_depth(0.0f)
-{}
+{
+    Vector2 const text_dim = MeasureTextEx(
+        m_font,
+        m_text_str.c_str(),
+        m_scaled_font_size,
+        m_letter_spacing
+    );
+    m_rec = {
+        m_position.x,
+        m_position.y,
+        text_dim.x,
+        text_dim.y
+    };
+    m_origin = {
+        m_rec.width / 2.0f,
+        m_rec.height / 2.0f
+    };
+}
 
 void text::update()
-{ 
+{
     entity::update();
-
-    // update the scaled font size in case scale has changed since last frame. 
     m_scaled_font_size = m_base_font_size * m_scale;
-    
     m_letter_spacing = m_scaled_font_size / 10.0f;
-    m_text_dim = MeasureTextEx(GetFontDefault(), m_text_str.c_str(), m_scaled_font_size, m_letter_spacing);
-    m_origin = { m_text_dim.x / 2.0f, m_text_dim.y / 2.0f };
+    Vector2 const text_dim = MeasureTextEx(
+        m_font,
+        m_text_str.c_str(),
+        m_scaled_font_size,
+        m_letter_spacing
+    );
+    m_rec = {
+        m_position.x,
+        m_position.y,
+        text_dim.x,
+        text_dim.y
+    };
+    m_origin = {
+        m_rec.width / 2.0f,
+        m_rec.height / 2.0f
+    };
     m_rotation = sin(GetTime() * m_rotation_speed) * m_rotation_depth;
 }
 
@@ -85,7 +105,7 @@ void text::draw()
                 sinf(angle) * m_outline_size
             };
             DrawTextPro(
-                GetFontDefault(),
+                m_font,
                 m_text_str.c_str(),
                 { m_position.x + offset.x, m_position.y + offset.y },
                 m_origin,
@@ -99,7 +119,7 @@ void text::draw()
 
     // Draw main text on top.
     DrawTextPro(
-        GetFontDefault(),
+        m_font,
         m_text_str.c_str(),
         m_position,
         m_origin,
