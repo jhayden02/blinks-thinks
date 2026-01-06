@@ -54,15 +54,13 @@ namespace engine
 {
     class game
     {
-        // Music mixer class. Handles all music throughout the game.
-        private:
+        public:
+            // Music mixer class. Handles all music throughout the game.
             class audio_manager
             {
                 public:
-                    static audio_manager& get_instance() {
-                        static audio_manager instance;
-                        return instance;
-                    }
+                    audio_manager();
+                    ~audio_manager();
 
                     void update();
 
@@ -71,15 +69,6 @@ namespace engine
                     void shift_pitch(float pitch);
 
                 private:
-                    audio_manager();
-                    ~audio_manager();
-
-                    // Prevent copy, copy assignment, move, and move assignment.
-                    audio_manager(const audio_manager&) = delete;
-                    audio_manager& operator=(const audio_manager&) = delete;
-                    audio_manager(audio_manager&&) = delete;
-                    audio_manager& operator=(audio_manager&&) = delete;
-
                     // All music tracks loaded on construction and referenced by their track names.
                     unordered_map<string, Music> m_music_tracks;
 
@@ -91,7 +80,7 @@ namespace engine
 
                     Music* m_current_music;     // The music currently being played.
                     Music* m_next_music;        // The song that should be mixed in.
-                    
+
                     float m_current_pitch;      // The current pitch of the music.
                     float m_next_pitch;         // The pitch that should be shifted to.
 
@@ -102,21 +91,18 @@ namespace engine
                     bool m_shifting;            // If the pitch is being shifted to something.
             };
 
-        public:
             static game& get_instance() {
                 static game instance;
                 return instance;
             }
- 
-            // Prevent copy, copy assignment, move, and move assignment.
+
             game(const game&) = delete;
             game& operator=(const game&) = delete;
             game(game&&) = delete;
             game& operator=(game&&) = delete;
 
-            audio_manager& audio;
+            audio_manager audio;
 
-            // Methods.
             void run();
 
             // Returns a random int from a defined range inclusively.

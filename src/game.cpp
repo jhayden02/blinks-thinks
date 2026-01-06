@@ -38,7 +38,6 @@ namespace web
 #endif
 
 game::game()
-    : audio(audio_manager::get_instance())
 {
     // Class initialization.
     std::random_device random_generator_seed;
@@ -48,7 +47,10 @@ game::game()
 
     // Window, Screen, and FPS.
     InitWindow(m_w, m_h, m_game_name);
-    SetWindowSize(m_w, m_h); // This fixes some Wayland bugs related to window size.
+
+    // This fixes some Wayland bugs related to window size.
+    SetWindowSize(m_w, m_h); 
+
     SetTargetFPS(m_frame_rate); 
 
     // Remove the ESC key as a close command.
@@ -205,12 +207,15 @@ void game::run()
         //                                      update.                                       //
         // ---------------------------------------------------------------------------------- //
         if (m_next_level != nullptr) {
-            if (m_current_level != nullptr) { delete m_current_level; }
+            if (m_current_level != nullptr) {
+                delete m_current_level;
+            }
             m_current_level = m_next_level;
             m_next_level = nullptr;
         }
-        
-        if (m_current_level != nullptr) { m_current_level->update(); }
+        if (m_current_level != nullptr) {
+            m_current_level->update();
+        }
 
         audio.update();
 
@@ -218,8 +223,12 @@ void game::run()
         //                                       draw.                                        //
         // ---------------------------------------------------------------------------------- //
         BeginDrawing();
-            ClearBackground(RAYWHITE);
-            if (m_current_level != nullptr) m_current_level->draw();
+        ClearBackground(RAYWHITE);
+
+        if (m_current_level != nullptr) {
+            m_current_level->draw();
+        }
+
         EndDrawing();
     }
 }
