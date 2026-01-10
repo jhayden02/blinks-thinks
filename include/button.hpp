@@ -34,96 +34,95 @@ using std::optional;
 
 namespace engine
 {
-    //
-    // Base button class.
-    //
-    class button : public entity {
-        public:
-            button(
-                text* text_obj,
-                Color bg_color,
-                Rectangle rec,
-                int layer,
-                Color outline_color = BLACK,
-                float outline_size = 2.0f); 
 
-            ~button();
+class button : public entity
+{
+    public:
+        button(
+            text* text_obj,
+            Color bg_color,
+            Rectangle rec,
+            int layer,
+            Color outline_color = BLACK,
+            float outline_size = 2.0f);
 
-            void update() override;
-            void draw() override;
-            
-            // Checks if the mouse is within the button's rectangle.
-            bool is_hovered();
+        ~button();
 
-            // Checks if 'is_hovered()' and the mouse being pressed are both true.
-            bool is_pressed();
+        void update() override;
+        void draw() override;
+    
+        // Checks if the mouse is within the button's rectangle.
+        bool is_hovered();
 
-            void add_trait(button_trait* trait) { m_traits.push_back(trait); }
-            
-            // Getters and setters.
-            string get_text() { return m_text_obj->get_text_str(); }
+        // Checks if 'is_hovered()' and the mouse being pressed are both true.
+        bool is_pressed();
 
-            text* get_text_obj() { return m_text_obj; }
+        void add_trait(button_trait* trait) { m_traits.push_back(trait); }
 
-            Rectangle get_base_rec() { return m_rec; }
-            void set_base_rec(Rectangle rec) { m_rec = rec; }
+        string get_text() { return m_text_obj->get_text_str(); }
 
-            Rectangle get_scaled_rec() { return m_scaled_rec; }
+        text* get_text_obj() { return m_text_obj; }
 
-            void set_scale(float scale) { m_scale = scale; }
+        Rectangle get_base_rec() { return m_rec; }
+        void set_base_rec(Rectangle rec) { m_rec = rec; }
 
-            float get_scale() { return m_scale; }
+        Rectangle get_scaled_rec() { return m_scaled_rec; }
 
-            void set_sfx_press(Sound sfx_press) { m_sfx_press = sfx_press; }
+        void set_scale(float scale) { m_scale = scale; }
 
-            Color get_outline_color() { return m_outline_color; }
-            void set_outline_color(Color outline_color) { m_outline_color = outline_color; }
+        float get_scale() { return m_scale; }
 
-            float get_outline_size() { return m_outline_size; }
-            void set_outline_size(float outline_size) { m_outline_size = outline_size; }
+        void set_sfx_press(Sound sfx_press) { m_sfx_press = sfx_press; }
 
-        private:
-            // The pointer to the text object of the button. The button handles updating and
-            // drawing it's child text within it's own 'update()' and 'draw()' methods.
-            text* m_text_obj;
+        Color get_outline_color() { return m_outline_color; }
+        void set_outline_color(Color outline_color) { m_outline_color = outline_color; }
 
-            // The base rectangle without scale applied.
-            Rectangle m_rec;
+        float get_outline_size() { return m_outline_size; }
+        void set_outline_size(float outline_size) { m_outline_size = outline_size; }
 
-            // The rectangle with scale applied, used for drawing and collision detection.
-            Rectangle m_scaled_rec;
+    private:
+        // The pointer to the text object of the button. The button handles updating and
+        // drawing it's child text within it's own 'update()' and 'draw()' methods.
+        text* m_text_obj;
 
-            // What color the text object's text should be when not hovered.
-            Color m_default_text_color;
+        // The base rectangle without scale applied.
+        Rectangle m_rec;
 
-            // What color the text object's text should be drawn in the current frame.
-            Color m_current_text_color;
+        // The rectangle with scale applied, used for drawing and collision detection.
+        Rectangle m_scaled_rec;
 
-            // What color the button's background should be when not hovered.
-            Color m_default_bg_color;
+        // What color the text object's text should be when not hovered.
+        Color m_default_text_color;
 
-            // What color the button's background should be in the current frame.
-            Color m_current_bg_color;
+        // What color the text object's text should be drawn in the current frame.
+        Color m_current_text_color;
 
-            // The color of the outline drawn around the button.
-            Color m_outline_color;
+        // What color the button's background should be when not hovered.
+        Color m_default_bg_color;
 
-            // The thickness of the outline in pixels.
-            float m_outline_size;
+        // What color the button's background should be in the current frame.
+        Color m_current_bg_color;
 
-            // What 'm_rectangle' and the text object's 'm_fontSize' are multiplied by.
-            float m_scale;
+        // The color of the outline drawn around the button.
+        Color m_outline_color;
 
-            // The sound effect played when the button is pressed.
-            optional<Sound> m_sfx_press;
+        // The thickness of the outline in pixels.
+        float m_outline_size;
 
-            // The storage container to hold all active traits attached to the button.
-            vector<button_trait*> m_traits;
-       
-            // The factor by which the button is brightened when hovered.
-            static constexpr float m_brighten_factor = 2.0f;
+        // What 'm_rectangle' and the text object's 'm_fontSize' are multiplied by.
+        float m_scale;
 
-            // Return a brightened version of a color, depending on m_brighten_factor.
-            Color brighten_color(Color color);
-    };
-}
+        // The sound effect played when the button is pressed.
+        optional<Sound> m_sfx_press;
+
+        // The storage container to hold all active traits attached to the button.
+        vector<button_trait*> m_traits;
+
+        // The factor by which the button is brightened when hovered.
+        static constexpr float m_brighten_factor = 2.0f;
+
+        // Return a brightened version of a color, depending on m_brighten_factor.
+        Color brighten_color(Color color);
+};
+
+} // NAMESPACE ENGINE.

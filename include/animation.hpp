@@ -30,64 +30,66 @@ using std::string;
 
 namespace engine
 {
-    class anim_raylib : public entity
-    {
-        public:
-            anim_raylib();
-            bool is_finished();
-            void update() override;
-            void draw() override;
 
-        private:
-            // Position.
-            int m_logo_position_x;
-            int m_logo_position_y;
+class anim_raylib : public entity
+{
+    public:
+        anim_raylib();
+        bool is_finished();
+        void update() override;
+        void draw() override;
 
-            // Size.
-            int m_top_side_rec_width;
-            int m_left_side_rec_height;
-            int m_bottom_side_rec_width;
-            int m_right_side_rec_height;
+    private:
+        // Position.
+        int m_logo_position_x;
+        int m_logo_position_y;
 
-            // Counters and state machines.
-            int m_frame_counter;
-            int m_letters_count;
-            int m_state;
+        // Size.
+        int m_top_side_rec_width;
+        int m_left_side_rec_height;
+        int m_bottom_side_rec_width;
+        int m_right_side_rec_height;
 
-            float m_alpha;
-    };
+        // Counters and state machines.
+        int m_frame_counter;
+        int m_letters_count;
+        int m_state;
 
-    class anim_self_credit : public entity
-    {
-        public:
-            anim_self_credit();
-            bool is_finished();
-            void draw() override;
-            void update() override;
+        float m_alpha;
+};
 
-        private:
-            // Counters.
-            int m_frame_counter;
-            int m_letters_count;
-           
-            // state of the animation.
-            enum class state {
-                LETTERS_ADDING,
-                LETTERS_REMOVING,
-                CURSOR_BLINKING,
-                BLANK_SCREEN_DELAY,
-                FINISHED
-            };
-            state m_state;
+class anim_self_credit : public entity
+{
+    public:
+        anim_self_credit();
+        bool is_finished();
+        void draw() override;
+        void update() override;
 
-            // text.
-            string m_text;
-            int m_font_size;
-            float m_spacing;
-            Font m_font;
-            Vector2 m_text_position;
+    private:
+        // Counters.
+        int m_frame_counter;
+        int m_letters_count;
+       
+        // state of the animation.
+        enum class state {
+            LETTERS_ADDING,
+            LETTERS_REMOVING,
+            CURSOR_BLINKING,
+            BLANK_SCREEN_DELAY,
+            FINISHED
+        };
+        state m_state;
 
-            // Colors.
-            Color m_bg_color;
-    };
-}
+        // text.
+        string m_text;
+        int m_font_size;
+        float m_spacing;
+        Font m_font;
+        Vector2 m_text_position;
+
+        // Colors.
+        Color m_bg_color;
+};
+
+} // NAMESPACE ENGINE.

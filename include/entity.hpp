@@ -25,41 +25,37 @@
 
 namespace engine
 {
-    class entity {
-        public:
-            entity(
-                Vector2 position = m_default_position,
-                int layer = m_default_layer,
-                Vector2 speed = m_default_speed
-            );
-            virtual ~entity() = default;
 
-            // 'update()' only does an update of 'm_position', but 'draw()' is pure virtual.
-            virtual void update();
-            virtual void draw() = 0;
+class entity
+{
+    public:
+        entity(
+            Vector2 position = m_default_position,
+            int layer = m_default_layer,
+            Vector2 speed = m_default_speed
+        );
+        virtual ~entity() = default;
 
-            // Getters and setters.
-            virtual Vector2 get_position() { return m_position; }
-            virtual void set_position(Vector2 position) { m_position = position; }
+        virtual void update();
+        virtual void draw() = 0;
 
-            virtual int get_layer() { return m_layer; }
-            virtual void set_layer(int layer) { m_layer = layer; }
+        virtual Vector2 get_position() { return m_position; }
+        virtual void set_position(Vector2 position) { m_position = position; }
 
-            virtual Vector2 get_speed() { return m_speed; }
-            virtual void set_speed(Vector2 speed) { m_speed = speed; }
+        virtual int get_layer() { return m_layer; }
+        virtual void set_layer(int layer) { m_layer = layer; }
 
-        protected:
-            Vector2 m_position;     // The X and Y coordinate position of the entity.
+        virtual Vector2 get_speed() { return m_speed; }
+        virtual void set_speed(Vector2 speed) { m_speed = speed; }
 
-            int m_layer;            // The layer in which the entity resides. This will determine
-                                    // draw ordering. Higher numbers are drawn higher, and lower
-                                    // numbers are drawn lower.
+    protected:
+        Vector2 m_position;
+        int m_layer;
+        Vector2 m_speed;
 
-            Vector2 m_speed;        // The X and Y movement speed per frame of the entity. 
-
-        // Constructor default arguments.
         static constexpr Vector2 m_default_position = {0, 0};
         static constexpr int m_default_layer = 0;
         static constexpr Vector2 m_default_speed = {0, 0};
-    };
-}
+};
+
+} // NAMESPACE ENGINE.

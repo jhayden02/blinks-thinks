@@ -33,9 +33,9 @@ using engine::overlay;
 
 level::level()
     :
+    m_game(game::get_instance()),
     m_entities{},
-    m_buttons{},
-    m_game(game::get_instance())
+    m_buttons{}
 {
     add_entity(
         new background(

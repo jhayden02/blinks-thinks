@@ -1,18 +1,18 @@
 /***********************************************************************************************
 *
-*   label.cpp - The library for creating, drawing, and interacting with a simple rectangle.
+*   shader_manager.hpp - Shader management for the game engine.
 *
 *   Copyright (c) 2025 Josh Hayden (@BlinkDynamo)
 *
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published
 *   by the Free Software Foundation.
-*  
+*
 *   Blink's Thinks is distributed in the hope that it will be useful,
 *   but WITHOUT ANY WARRANTY; without even the implied warranty of
 *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *   GNU General Public License for more details.
-*  
+*
 *   You should have received a copy of the GNU General Public License
 *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
@@ -20,42 +20,34 @@
 
 #pragma once
 
-// Source.
-#include "entity.hpp"
+#include <raylib.h>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+using std::string;
+using std::unordered_map;
+using std::vector;
 
 namespace engine
 {
 
-class label : public entity
+class shader_manager
 {
     public:
-        label(
-            Color line_color,
-            Color fill_color,
-            Vector2 size,
-            int thickness,
-            Vector2 position = {0, 0},
-            int layer = 0);
+        shader_manager();
+        ~shader_manager();
 
-        void update() override;
-        void draw() override;
-
-        void set_scale(float scale) { m_scale = scale; }
-
-        Rectangle get_rectangle() { return m_rectangle; }
+        void begin();
+        void append(string shader_name);
+        void process();
 
     private:
-        Color m_line_color;
-
-        Color m_fill_color;
-
-        Vector2 m_size;
-
-        int m_thickness;
-
-        Rectangle m_rectangle;
-
-        float m_scale;
+        RenderTexture2D m_target_a;
+        RenderTexture2D m_target_b;
+        unordered_map<string, Shader> m_shaders;
+        vector<string> m_shader_queue;
+        bool m_in_texture_mode;
 };
 
 } // NAMESPACE ENGINE.

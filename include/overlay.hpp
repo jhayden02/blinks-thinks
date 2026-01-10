@@ -25,17 +25,19 @@
 
 namespace engine
 {
-    class overlay : public entity
-    {
-        public:
-            overlay(Color color, Vector2 position = {0, 0}, int layer = 1000);
 
-            void set_color(Color color) { m_color = color; }
+class overlay : public entity
+{
+    public:
+        overlay(Color color, Vector2 position = {0, 0}, int layer = 1000);
 
-            void update() override;
-            void draw() override;
+        void set_color(Color color) { m_color = color; }
 
-        private:
-            Color m_color;
-    };
-}
+        void update() override;
+        void draw() override;
+
+    private:
+        Color m_color;
+};
+
+} // NAMESPACE ENGINE.
