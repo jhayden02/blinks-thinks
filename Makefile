@@ -48,46 +48,46 @@ help:
 	@echo "  make clean   - Remove the 'build/' directory"
 	@echo "  make serve   - Serve web release build on port 8080"
 
-linux: lib/linux/$(RL_LIB_NAME) build/linux/debug/$(EXE_NAME) build/linux/release/$(EXE_NAME) 
+linux: build/linux/debug/$(EXE_NAME) build/linux/release/$(EXE_NAME) 
 
-windows: lib/windows/$(RL_LIB_NAME) build/windows/debug/$(EXE_NAME).exe build/windows/release/$(EXE_NAME).exe
+windows: build/windows/debug/$(EXE_NAME).exe build/windows/release/$(EXE_NAME).exe
 
-web: lib/web/$(RL_LIB_NAME) build/web/debug/index.html build/web/release/index.html 
+web: build/web/debug/index.html build/web/release/index.html 
 
 build/linux/debug/%.o: $(D_SRC)/%.cpp | build/linux/debug
 	$(LINUX_CXX) $(LINUX_CXXFLAGS_DEBUG) -c $< -o $@
 
-build/linux/debug/$(EXE_NAME): $(patsubst $(D_SRC)/%.cpp,build/linux/debug/%.o,$(SOURCES))
+build/linux/debug/$(EXE_NAME): lib/linux/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/linux/debug/%.o,$(SOURCES))
 	$(LINUX_CXX) $(filter %.o,$^) $(LINUX_LINK_FLAGS) -o $@
 
 build/linux/release/%.o: $(D_SRC)/%.cpp | build/linux/release
 	$(LINUX_CXX) $(LINUX_CXXFLAGS_RELEASE) -c $< -o $@
 
-build/linux/release/$(EXE_NAME): $(patsubst $(D_SRC)/%.cpp,build/linux/release/%.o,$(SOURCES))
+build/linux/release/$(EXE_NAME): lib/linux/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/linux/release/%.o,$(SOURCES))
 	$(LINUX_CXX) $(filter %.o,$^) $(LINUX_LINK_FLAGS) -o $@
 
 build/windows/debug/%.o: $(D_SRC)/%.cpp | build/windows/debug
 	$(WINDOWS_CXX) $(WINDOWS_CXXFLAGS_DEBUG) -c $< -o $@
 
-build/windows/debug/$(EXE_NAME).exe: $(patsubst $(D_SRC)/%.cpp,build/windows/debug/%.o,$(SOURCES))
+build/windows/debug/$(EXE_NAME).exe: lib/windows/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/windows/debug/%.o,$(SOURCES))
 	$(WINDOWS_CXX) $(filter %.o,$^) $(WINDOWS_LINK_FLAGS) -o $@
 
 build/windows/release/%.o: $(D_SRC)/%.cpp | build/windows/release
 	$(WINDOWS_CXX) $(WINDOWS_CXXFLAGS_RELEASE) -c $< -o $@
 
-build/windows/release/$(EXE_NAME).exe: $(patsubst $(D_SRC)/%.cpp,build/windows/release/%.o,$(SOURCES))
+build/windows/release/$(EXE_NAME).exe: lib/windows/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/windows/release/%.o,$(SOURCES))
 	$(WINDOWS_CXX) $(filter %.o,$^) $(WINDOWS_LINK_FLAGS) -o $@
 
 build/web/debug/%.o: $(D_SRC)/%.cpp | build/web/debug
 	$(WEB_CXX) $(WEB_CXXFLAGS_DEBUG) -c $< -o $@
 
-build/web/debug/index.html: $(patsubst $(D_SRC)/%.cpp,build/web/debug/%.o,$(SOURCES))
+build/web/debug/index.html: lib/web/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/web/debug/%.o,$(SOURCES))
 	$(WEB_CXX) $^ $(WEB_LINK_FLAGS) -o $@
 
 build/web/release/%.o: $(D_SRC)/%.cpp | build/web/release
 	$(WEB_CXX) $(WEB_CXXFLAGS_RELEASE) -c $< -o $@
 
-build/web/release/index.html: $(patsubst $(D_SRC)/%.cpp,build/web/release/%.o,$(SOURCES))
+build/web/release/index.html: lib/web/$(RL_LIB_NAME) $(patsubst $(D_SRC)/%.cpp,build/web/release/%.o,$(SOURCES))
 	$(WEB_CXX) $^ $(WEB_LINK_FLAGS) -o $@
 
 lib/linux/$(RL_LIB_NAME): | lib/linux
