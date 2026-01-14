@@ -23,7 +23,7 @@
 
 // Standard library.
 #include <unordered_set>
-//#include <algorithm>
+#include <algorithm>
 
 #ifdef PLATFORM_WEB
 #include <emscripten.h>
