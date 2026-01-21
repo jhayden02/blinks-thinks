@@ -22,7 +22,7 @@
 
 // Source.
 #include "entity.hpp"
-#include "entity_traits.hpp"
+#include "button_traits.hpp"
 #include "text.hpp"
 
 // Standard library.

@@ -22,11 +22,14 @@
 
 // Source.
 #include "entity.hpp"
+#include "text_traits.hpp"
 
 // Standard library.
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 namespace engine
 {
@@ -47,12 +50,10 @@ class text : public entity
         void update() override;
         void draw() override;
 
-        void add_anim_rotate(float rotation, float speed, float depth)
-        {
-            m_rotation = rotation;
-            m_rotation_speed = speed;
-            m_rotation_depth = depth;
-        }
+        void add_trait(text_trait* trait) { m_traits.push_back(trait); }
+
+        float get_rotation() { return m_rotation; }
+        void set_rotation(float rotation) { m_rotation = rotation; }
 
         string get_text_str() { return m_text_str; }
         void set_text_str(string text_str) { m_text_str = text_str; }
@@ -98,9 +99,8 @@ class text : public entity
 
         float m_rotation;
 
-        float m_rotation_speed;
-
-        float m_rotation_depth;
+        // The storage container to hold all active traits attached to the text.
+        vector<text_trait*> m_traits;
 };
 
 } // NAMESPACE ENGINE.

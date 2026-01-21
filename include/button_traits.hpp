@@ -1,6 +1,6 @@
 /***********************************************************************************************
-*
-*   entity_traits.hpp - The library for adding traits to existing entities.
+
+*   button_traits.hpp - The library for adding traits to existing button objects.
 *
 *   Copyright (c) 2025 Josh Hayden (@BlinkDynamo)
 *
@@ -25,14 +25,14 @@
 
 namespace engine
 {
-
+// Forward declaration.
 class button;
 
 class button_trait
 {
     public:
         virtual ~button_trait() = default;
-        virtual void update(button& b) = 0;
+        virtual void update(button& btn) = 0;
 };
 
 class grows_when_hovered : public button_trait

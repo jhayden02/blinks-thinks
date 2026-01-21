@@ -1,6 +1,6 @@
 /***********************************************************************************************
 *
-*   entity_traits.cpp - The library for adding traits to existing entities.
+*   button_traits.cpp - The library for adding traits to existing button objects.
 *
 *   Copyright (c) 2025 Josh Hayden (@BlinkDynamo)
 *
@@ -19,7 +19,7 @@
 ***********************************************************************************************/
 
 // Source.
-#include "entity_traits.hpp"
+#include "button_traits.hpp"
 #include "game.hpp"
 
 using engine::game;

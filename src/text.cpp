@@ -47,9 +47,7 @@ text::text(
     m_rec{},
     m_origin{},
     m_outline_size(outline_size),
-    m_rotation(0.0f),
-    m_rotation_speed(0.0f),
-    m_rotation_depth(0.0f)
+    m_rotation(0.0f)
 {
     Vector2 const text_dim = MeasureTextEx(
         m_font,
@@ -72,6 +70,11 @@ text::text(
 void text::update()
 {
     entity::update();
+
+    for (auto& trait : m_traits) {
+        trait->update(*this);
+    }
+
     m_scaled_font_size = m_base_font_size * m_scale;
     m_letter_spacing = m_scaled_font_size / 10.0f;
     Vector2 const text_dim = MeasureTextEx(
@@ -90,7 +93,6 @@ void text::update()
         m_rec.width / 2.0f,
         m_rec.height / 2.0f
     };
-    m_rotation = sin(GetTime() * m_rotation_speed) * m_rotation_depth;
 }
 
 void text::draw()

@@ -25,6 +25,7 @@
 
 using engine::game;
 using engine::entity;
+using engine::rotation_sin;
 using engine::grows_when_hovered;
 using engine::grabbable;
 
@@ -86,7 +87,7 @@ level_title::level_title()
         0
     );
     this->m_play_button = add_ui_button("Play");
-    this->m_game_title_text.text_obj->add_anim_rotate(0.0f, 5.0f, 2.5f);
+    this->m_game_title_text.text_obj->add_trait(new rotation_sin(5.0f, 2.5f));
     
     string version_and_build_display_str  = ("v" + game::get_game_version());
     float version_and_build_display_spacing;
@@ -136,7 +137,7 @@ level_lose::level_lose()
         {m_game.get_cw(), m_game.get_ch() - 100},
         0
     )
-    ->add_anim_rotate(0.0f, 5.0f, 2.5f);
+    ->add_trait(new rotation_sin(5.0f, 2.5f));
 
     // Pitch the music down.
     m_game.audio->shift_pitch(0.8f);
@@ -166,7 +167,7 @@ level_win::level_win()
         {m_game.get_cw(), m_game.get_ch() - 100},
         0
     )
-    ->add_anim_rotate(0.0f, 5.0f, 2.5f);
+    ->add_trait(new rotation_sin(5.0f, 2.5f));
 }
 
 void level_win::update()
@@ -229,7 +230,7 @@ level_one::level_one()
         {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     //
     // Button creation.
@@ -323,7 +324,7 @@ level_two::level_two()
         {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
 
     //
@@ -409,7 +410,7 @@ level_three::level_three()
     add_simple_text("level  ", 80, ORANGE, {m_game.get_cw(), m_game.get_ch() - 250}, 0);
 
     add_simple_text("What is the tallest number?", 40, RAYWHITE, {m_game.get_cw(), m_game.get_ch() - 150}, 0)
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
     
     //
     // Button creation.
@@ -507,7 +508,7 @@ level_four::level_four()
         m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     add_text_button(
         "2 seconds",
@@ -590,7 +591,7 @@ level_five::level_five(string duration)
         {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     add_simple_text(
         "more seconds",
@@ -599,7 +600,7 @@ level_five::level_five(string duration)
         {m_game.get_cw(), m_game.get_ch()},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     //
     // Button creation.
@@ -776,7 +777,7 @@ level_six::level_six()
         {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
     
     //
     // Button creation.
@@ -879,7 +880,7 @@ level_seven::level_seven()
         {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     //
     // Button creation.
@@ -1015,7 +1016,7 @@ level_eight::level_eight()
         m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     // Get a completed fibbonacci sequence from a random first and second number.
     int fib_seq_num_one = m_game.get_random_value(1, 4);
@@ -1037,7 +1038,7 @@ level_eight::level_eight()
         {m_game.get_cw(), m_game.get_ch() - 100},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     //
     // Button creation.
@@ -1159,7 +1160,7 @@ level_nine::level_nine()
         {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     this->m_submit_box = add_entity(
         new label(
@@ -1301,7 +1302,7 @@ level_ten::level_ten()
         {m_game.get_cw(), m_game.get_ch() - 150},
         0
     )
-    ->add_anim_rotate(0.0f, 4.0f, 1.5f);
+    ->add_trait(new rotation_sin(4.0f, 1.5f));
 
     Vector2 const submit_box_position = {m_game.get_cw(), m_game.get_ch() - 25};
     this->m_submit_box = add_entity(
