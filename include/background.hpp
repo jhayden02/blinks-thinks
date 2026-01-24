@@ -2,7 +2,7 @@
 *
 *   background.hpp - The library for creating and drawing backgrounds.
 *
-*   Copyright (c) 2025 Josh Hayden (@BlinkDynamo)
+*   Copyright (c) 2025 Josh Hayden (@jhayden02)
 *
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published
