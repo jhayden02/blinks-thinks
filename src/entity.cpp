@@ -2,7 +2,7 @@
 *
 *   entity.cpp - The base class for all game entities.
 *
-*   Copyright (c) 2025 Josh Hayden (@jhayden02)
+*   Copyright (c) 2026 Josh Hayden (@jhayden02)
 *
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published

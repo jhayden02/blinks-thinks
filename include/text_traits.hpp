@@ -2,7 +2,7 @@
 *
 *   text_traits.hpp - The library for adding traits to existing text objects.
 *
-*   Copyright (c) 2025 Josh Hayden (@jhayden02)
+*   Copyright (c) 2026 Josh Hayden (@jhayden02)
 *
 *   Blink's Thinks is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License v3.0 as published
